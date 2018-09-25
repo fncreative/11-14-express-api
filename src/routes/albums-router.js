@@ -56,7 +56,7 @@ albumsRouter.delete('/api/albums/:id', (request, response) => {
   if (storageByHash[request.params.id]) {
     logger.log(logger.INFO, `The resource with id of ${request.params.id} has been found and removed.`);
     delete storageByHash[request.params.id];
-    return response.sendStatus(200);
+    return response.sendStatus(204);
   }
 
   logger.log(logger.INFO, 'That album does not exist. Responding with a 404 status code.');
