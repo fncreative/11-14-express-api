@@ -2,7 +2,7 @@
 ======
 
 ## Travis CI
-
+[![Build Status](https://travis-ci.com/fncreative/11-14-express-api.svg?branch=master)](https://travis-ci.com/fncreative/11-14-express-api)
 
 ## Express-API
  This application allows you to create, request and delete entries for an album list.
