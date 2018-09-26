@@ -13,7 +13,7 @@ describe('api/albums', () => {
   afterAll(server.stop);
 
   describe('testing the post request', () => {
-    test('this should respond with 200 status code and a new json mountain', () => {
+    test('this should respond with 200 status code and a new json album', () => {
       return superagent.post(API_URL)
         .set('Content-Type', 'application/json')
         .send({
@@ -28,7 +28,7 @@ describe('api/albums', () => {
           expect(response.body.timestamp).toBeTruthy();
         });
     });
-    test('this should respond with 400 status code if there is no name', () => {
+    test('this should respond with 400 status code if there is no album title', () => {
       return superagent.post(API_URL)
         .set('Content-Type', 'application/json')
         .send({
@@ -42,7 +42,7 @@ describe('api/albums', () => {
   });
 
   describe('testing the get methods', () => {
-    test('this should respond with 200 status code and a json note if there is a matching id', () => {
+    test('this should respond with 200 status code and a json album if there is a matching id', () => {
       const originalRequest = {
         title: faker.lorem.words(3),
         year: faker.random.number(),
@@ -64,7 +64,7 @@ describe('api/albums', () => {
   });
 
   describe('testing the delete requests', () => {
-    test('this should respond with 200 status code', () => {
+    test('this should respond with 204 status code', () => {
       const originalRequest = {
         title: faker.lorem.words(3),
         year: faker.random.number(),
@@ -77,7 +77,7 @@ describe('api/albums', () => {
           return superagent.delete(`${API_URL}/${postResponse.body.id}`);
         })
         .then((getResponse) => {
-          expect(getResponse.status).toEqual(200);
+          expect(getResponse.status).toEqual(204);
         });
     });
   });

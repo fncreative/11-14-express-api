@@ -2,17 +2,22 @@
 
 const express = require('express');
 const logger = require('./logger');
-const albumRoutes = require('../routes/albums-router');
+const loggerMiddleware = require('./logger-middleware');
+const errorMiddleware = require('./error-middleware');
+
+const noteRoutes = require('../routes/albums-router');
 
 const app = express();
+app.use(loggerMiddleware);
 
-app.use(albumRoutes);
+app.use(noteRoutes);
 
 app.all('*', (request, response) => {
-  logger.log(logger.INFO, 'Returning a 404 from default route (route was not found)');
+  logger.log(logger.INFO, 'Returning a 404 from catch-all/default route (the route was not found');
   return response.sendStatus(404);
 });
 
+app.use(errorMiddleware);
 const server = module.exports = {};
 let internalServer = null;
 
@@ -24,6 +29,6 @@ server.start = () => {
 
 server.stop = () => {
   internalServer.close(() => {
-    logger.log(logger.INFO, 'The server is off.');
+    logger.log(logger.INFO, 'The server is OFF.');
   });
 };
