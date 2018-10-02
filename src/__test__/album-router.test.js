@@ -11,7 +11,7 @@ const API_URL = `http://localhost:${process.env.PORT}/api/albums`;
 describe('api/albums', () => {
   beforeAll(server.start);
   afterAll(server.stop);
-  beforeEach(albumMock.pCleanAlbumMocks);
+  beforeEach(albumMock.pCleanAlbumMock);
 
   // POST test
   test('this should respond with 200 status code and a new json album', () => {
@@ -57,20 +57,18 @@ describe('api/albums', () => {
       });
   });
   // Delete test
-  test('this should respond with 204 status code', () => {
-    const originalRequest = {
-      title: faker.lorem.words(3),
-      year: faker.random.number(),
-    };
-    return superagent.post(API_URL)
-      .set('Content-Type', 'application/json')
-      .send(originalRequest)
-      .then((postResponse) => {
-        originalRequest._id = postResponse.body._id;
-        return superagent.delete(`${API_URL}/${postResponse.body._id}`);
+  test('this should respond with 200 status code', () => {
+    let savedAlbumMock = null;
+    return albumMock.pCreateAlbumMock()
+      .then((createdAlbumMock) => {
+        savedAlbumMock = createdAlbumMock;
+        return superagent.delete(`${API_URL}/${createdAlbumMock._id}`);
       })
-      .then((getResponse) => {
-        expect(getResponse.status).toEqual(200);
+      .then((deleteResponse) => {
+        expect(deleteResponse.status).toEqual(200);
+        expect(deleteResponse.body.timestamp).toBeTruthy();
+        expect(deleteResponse.body._id.toString()).toEqual(savedAlbumMock._id.toString());
+        expect(deleteResponse.body.title).toEqual(savedAlbumMock.title);
       });
   });
   // Delete failure test
@@ -95,6 +93,7 @@ describe('api/albums', () => {
         expect(getResponse.body.timestamp).toBeTruthy();
         expect(getResponse.body._id.toString()).toEqual(savedAlbumMock._id.toString());
         expect(getResponse.body.title).toEqual(savedAlbumMock.title);
+        expect(getResponse.body.year).toEqual(savedAlbumMock.year);
       });
   });
   // Get failure test

@@ -1,17 +1,17 @@
 'use strict';
 
 const faker = require('faker');
-const Album = require('../../model/albums');
+const AlbumList = require('../../model/albums');
 
 const albumMock = module.exports = {};
 
 albumMock.pCreateAlbumMock = () => {
-  return new Album({
-    title: faker.lorem.words(3),
+  return new AlbumList({
+    title: faker.lorem.words(10),
     year: faker.random.number(),
   }).save();
 };
 
-albumMock.pCleanAlbumMocks = () => {
-  return Album.remove({});
+albumMock.pCleanAlbumMock = () => {
+  return AlbumList.remove({});
 };
