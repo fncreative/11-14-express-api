@@ -9,6 +9,7 @@
   "scripts": {
     "test": "eslint . && jest --coverage",
     "lint": "eslint .",
+    "dbDevOn": "mkdir -p ./testdb && mongod --dbpath ./testdb",
     "dbOn": "mkdir -p ./db && mongod --dbpath ./db",
     "dbOff": "killall mongod"
   },

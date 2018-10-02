@@ -46,18 +46,29 @@ albumsRouter.delete('/api/albums/:id', (request, response, next) => {
     .catch(next);
 });
 
-// albumsRouter.put('/api/albums/:id', jsonParser, (request, response, next) => {
-//   logger.log(logger.INFO, `Trying to update an object with id ${request.params.id}`);
-//
-//   if (storageByHash[request.params.id]) {
-//     logger.log(logger.INFO, 'We found the right album to update');
-//     if (request.body.title) {
-//       storageByHash[request.params.id].title = request.body.title;
-//     }
-//     if (request.body.year) {
-//       storageByHash[request.params.id].year = request.body.year;
-//     }
-//     return response.json(storageByHash[request.params.id]);
-//   }
-//   return next(new HttpError(404, 'The album was not found'));
-// });
+albumsRouter.put('/api/albums/:id', jsonParser, (request, response, next) => {
+  return Album.findById(request.params.id)
+    .then((album) => {
+      if (!request.body) {
+        throw HttpError(400, 'an album title is required');
+      }
+      if (!album) {
+        throw HttpError(404, 'Album not found');
+      }
+      if (request.body.title) {
+        album.set({
+          title: `${request.body.title}`,
+        });
+      }
+      if (request.body.year) {
+        album.set({
+          year: `${request.body.year}`,
+        });
+      }
+      logger.log(logger.INFO, 'Responding with a 200 status code and a album object');
+      return album.save()
+        .then(updatedAlbum => response.json(updatedAlbum))
+        .catch(next);
+    })
+    .catch(next);
+});
