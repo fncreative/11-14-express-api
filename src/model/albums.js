@@ -12,11 +12,10 @@ const albumSchema = mongoose.Schema({
     required: true,
     unique: true,
   },
-  year: {
-    type: Number,
+  track: {
+    type: String,
     required: true,
-    minlength: 4,
   },
 });
 
-module.exports = mongoose.model('AlbumList', albumSchema);
+module.exports = mongoose.model('TrackList', albumSchema);

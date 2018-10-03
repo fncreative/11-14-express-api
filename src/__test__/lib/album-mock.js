@@ -7,8 +7,8 @@ const albumMock = module.exports = {};
 
 albumMock.pCreateAlbumMock = () => {
   return new AlbumList({
-    title: faker.lorem.words(10),
-    year: faker.random.number(),
+    title: faker.lorem.words(1),
+    track: faker.lorem.words(2),
   }).save();
 };
 
